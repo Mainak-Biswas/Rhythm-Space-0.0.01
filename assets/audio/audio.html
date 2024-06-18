@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/2d9b67a497.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="audio-player-container">
+        <audio controls id="audio-player" autoplay>
+            <source  src="https://samplesongs.netlify.app/Bad%20Liar.mp3" type="audio/mpeg" >
+            Your browser does not support the audio element.
+        </audio> 
+        <div id="custom-audio-player" class="custom-audio-player">
+            <div class="aud-ctrl-btn" id="aud-ctrl-btn">></div>
+            <div id="play-time" class="play-time">
+                <span id="curr-time"></span>
+                /
+                <span id="total-time"></span>
+            </div>
+            <div id="play-seeker" class="play-seeker">
+                <!-- <button class="seek-5 seek-back" id="seek-back">5</button> seek 5 sec back  -->
+                <input type="range" id="play-progress" class="play-progress" value="0">
+                <!-- <button class="seek-5 seek-forth" id="seek-forth">5</button> seek 5 sec forth-->
+            </div>
+            <div id="vol-ctrl" class="vol-ctrl">
+                <input type="range" name="vol-bar" id="vol-bar" class="vol-bar" value="100">
+                <div class="mute-btn" id="mute-btn"><i class='fas fa-volume-up'></i></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+
+    #audio-player{
+        display: none;
+    }
+    .custom-audio-player{
+        display: flex;
+        flex-direction: row;
+        width:100%;
+        align-items: center;
+    }
+
+    .aud-ctrl-btn{
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .vol-ctrl{
+        display: flex;
+    }
+
+    .play-time{
+        padding: 15px;
+        min-width: 70px;
+    }
+
+    .play-seeker{
+        display: flex;
+        flex-grow: 1;
+    }
+    .play-progress{
+        flex-grow: 2;
+    }
+
+    .vol-ctrl{
+        transition: all 1s;
+        padding-left: 10px;
+    }
+    .vol-ctrl:hover{
+        direction: ltr;
+    }
+
+    .vol-ctrl .vol-bar{
+        width: 0px;
+        display: block;
+        transition: all 0.3s;
+    }
+
+    .vol-ctrl:hover  .vol-bar{
+        width: 100px;
+    }
+
+    .vol-bar::-webkit-slider-thumb{
+        visibility: hidden;
+    }
+    .vol-bar:hover::-webkit-slider-thumb{
+        visibility: visible;
+    }
+
+    .mute-btn{
+        width:30px;
+        height:30px;
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<script>
+    const audioPlayer = document.getElementById('audio-player');
+    let audioDuration = '';
+    //Initial render of time update
+    audioPlayer.oncanplay = () =>{
+        audioDuration = audioPlayer.duration
+        totalTime.textContent = inMinutes(audioDuration);
+    };
+
+    const audCtrlBtn = document.getElementById('aud-ctrl-btn');
+    const currTime = document.getElementById('curr-time');
+    const totalTime = document.getElementById('total-time');
+    const playProgress = document.getElementById('play-progress');
+    const seekBack = document.getElementById('seek-back');
+    const seekForth = document.getElementById('seek-forth');
+    
+    
+    audCtrlBtn.addEventListener('click',()=>{
+        if(audioPlayer.paused) audioPlayer.play();
+        else audioPlayer.pause();
+    })
+
+    //Playing & Pauseng Audio
+    audioPlayer.onpause =()=>{
+        audCtrlBtn.innerHTML= `<i class="fas fa-play" style='font-size:18px'></i>`;
+        clearInterval(audTimeInterval);
+    }
+
+    audioPlayer.onplay =()=>{ 
+        audCtrlBtn.innerHTML= `<i class="fa fa-pause"></i>`;
+        audTimeInterval = setInterval(audioTime,100); //Updates the time after every 1 sec
+    
+    }
+           
+    //Updating the time 
+    function audioTime(){ //Displays time in UI
+        currTime.textContent = inMinutes(audioPlayer.currentTime); //Updates current time
+        totalTime.textContent = inMinutes(audioDuration);
+        playProgress.value=(audioPlayer.currentTime/audioDuration)*100;// Updates progressbar
+
+        console.log(1)
+    }
+
+    function inMinutes(time){ //Converts time in sec to minutes
+        var mind = time % (60 * 60);
+        var minutes = Math.floor(mind / 60);
+                
+        var secd = mind % 60;
+        var seconds = Math.floor(secd);
+        seconds = (seconds<10?'0'+seconds:seconds);
+
+        return minutes+':'+seconds;
+    }
+
+    //Play progress changes and update
+    playProgress.onmousedown = ()=>{
+        audioPlayer.pause();
+    }
+    playProgress.oninput =  (event) => {
+        currTime.textContent = inMinutes(audioDuration*event.target.value/100);
+    };
+    playProgress.onmouseup = ()=>{
+        updateProgress();
+    };
+    
+    function updateProgress(){
+        const newtime = audioDuration*(playProgress.value/100);
+        audioPlayer.currentTime = newtime;
+        audioPlayer.play();
+    }
+
+    //Seeking 5 sec
+    // seekBack.onclick = ()=>{
+    //     audioPlayer.currentTime-=5;
+    // }
+    // seekForth.onclick = ()=>{
+    //     audioPlayer.currentTime+=5;
+    // }
+
+
+    //Volume controls
+    let currVol = audioPlayer.volume;
+    const volBar = document.getElementById('vol-bar');
+    volBar.oninput =  (event) => {
+        audioPlayer.volume = event.target.value/100;
+        console.log(audioPlayer.volume);
+        currVol = audioPlayer.volume;
+
+        mute(currVol);
+    };
+
+    const muteBtn = document.getElementById('mute-btn');
+    muteBtn.onclick = ()=>{
+        if(audioPlayer.volume !== 0){
+            audioPlayer.volume = 0;
+        }
+        else{
+            audioPlayer.volume = currVol;
+        }
+        const vol = audioPlayer.volume;
+        mute(vol);
+        volBar.value = vol*100;
+       
+    }
+
+    function mute(volume){
+        if(volume === 0){
+            //Change to icon to mute
+            muteBtn.innerHTML = `<i class='fas fa-volume-mute'></i>`;
+        }
+        else{
+            //Change to icon to mute
+            muteBtn.innerHTML = `<i class='fas fa-volume-up'></i>`;
+        }
+    }
+</script>

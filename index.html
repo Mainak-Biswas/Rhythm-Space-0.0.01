@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhythm Space</title>
+    <link rel="stylesheet" href="style.css">  
+    <link rel="stylesheet" href="assets/audio/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/rhythm_space_logo.png">
+    <script src="https://kit.fontawesome.com/2d9b67a497.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1 id="heading">
+        <img src='assets/rhythm_space_logo.png' id="heading-img" class="heading-img">
+        Rhythm Space
+    </h1>
+    <!-- Toggle button to toggle theme -->
+    <div class="theme-toggle">
+        <div id="theme-mode" class="theme-mode">Light</div>
+        <div class="toggle-bar" for="theme-toggle-cb">
+            <input type="checkbox" id="theme-toggle-cb"/>
+            <label for="theme-toggle-cb"></label>
+        </div>
+    </div>
+
+    <div class="sections">
+        <!-- All Songs Section -->
+        <div class="all-songs section" id="all-songs">
+            <div id="genre-container">
+                <label for="genre-filter">Filter by Genre :</label>
+                <select name="genre-filter" id="genre-filter" class="genre-filter"></select>
+            </div>
+            <label for="songs-container">
+                <h3><span id="genre-name"></span> Songs</h3>
+            </label>
+            <div id="songs-container">
+            </div>
+        </div>
+
+        <!-- Song Card Section -->
+        <div class="song-card section" id="song-card">
+            <div id="song-det" class="song-det">
+                <div id="song-img" class="song-img">
+                    <img id="song-img-src" src="" alt="">
+                </div>
+                <div class="song-title-artist">
+                    <div id="song-title" class="song-title"></div>
+                    <div id="song-artist" class="song-artist"></div>
+                </div>
+            </div>
+            <div id="audio-player-container">
+                <audio controls id="audio-player" >
+                </audio>
+                <div id="custom-audio-player" class="custom-audio-player">
+                </div>
+            </div>
+            
+            
+
+            <div class="playlist-controls" id="playlist-controls">
+                <div class="prev-next">
+                    <div class='prev ctrlBtn' id="prev"><i class='fas fa-angle-double-left'></i> Prev</div>
+                    <div class='next ctrlBtn' id="next">Next <i class='fas fa-angle-double-right'></i></div>
+                </div>
+            </div>
+            <div class="add-to-pl" id="add-to-pl">
+                <i class="fa fa-plus-circle"></i>
+                Add to playlist
+            </div>
+        </div>
+
+        <!-- Playlist Section -->
+        <div class="play-lists section" id="play-lists">
+            <div id="new-playlist-create" class="new-playlist-create">
+                <input type="text" placeholder="Enter New Playlist Name" id="createPLInput" required/>
+                <input type="submit" value="Create Playlist" id='createPLBtn' class="createPLBtn"/>
+            </div>
+            <div id="playlists">
+                <div id="current-playlist-container">
+                    <h3>Current Playlist: <span id="playlist-name-cont" class="playlist-name-cont"></span></h3> 
+                    <div id="current-playlist" class="current-playlist">
+                        <!-- <button class="songBtn">s1</button> -->
+                    </div>
+                </div>
+                <div id="all-playlists-container">
+                    <h3>All Playlists</h3>
+                    <div id="all-playlists" class="all-playlists">
+                        <!-- <button class="playlist-btn" id="playlist-btn">Playlist 1</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="assets/audio/script.js"></script>
+<script src="assets/data.js"></script>
+<script src="script.js"></script>
+
+</html>
