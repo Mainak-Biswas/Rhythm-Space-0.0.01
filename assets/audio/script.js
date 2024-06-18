@@ -93,12 +93,11 @@
 
         //Play progress changes and update
         let paused = '';
-        playProgress.addEventListener('mousedown',()=>{paused = audioPlayer.paused;}) //Mouse Event
-        playProgress.addEventListener('touchstart',()=>{paused = audioPlayer.paused;}) //Touch Event
+        playProgress.addEventListener('mousedown',()=>{paused = audioPlayer.paused;audioPlayer.pause();}) //Mouse Event
+        playProgress.addEventListener('touchstart',()=>{paused = audioPlayer.paused;audioPlayer.pause();}) //Touch Event
 
 
         playProgress.addEventListener('input',(event) => {
-            audioPlayer.pause();
             currTime.textContent = inMinutes(audioDuration*event.target.value/100);
             updateProgress();
         });
