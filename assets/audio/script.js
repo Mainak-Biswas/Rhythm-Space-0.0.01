@@ -91,13 +91,19 @@
     playProgress.className= 'play-progress';
 
         //Play progress changes and update
+        let paused = '';
+        playProgress.addEventListener('mousedown',()=>{paused = audioPlayer.paused;})
+        playProgress.addEventListener('touchstart',()=>{paused = audioPlayer.paused;})
+
+
         playProgress.addEventListener('input',(event) => {
-            const paused = audioPlayer.paused;
             audioPlayer.pause();
             currTime.textContent = inMinutes(audioDuration*event.target.value/100);
             updateProgress();
-            if(!paused) audioPlayer.play();
         });
+
+        playProgress.addEventListener('mouseup',()=>{if(!paused)audioPlayer.play();});
+        playProgress.addEventListener('touchend',()=>{if(!paused)audioPlayer.play();});
         
     function updateProgress(){
         const newtime = audioDuration*(playProgress.value/100);
