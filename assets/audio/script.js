@@ -91,16 +91,13 @@
     playProgress.className= 'play-progress';
 
         //Play progress changes and update
-        playProgress.addEventListener('mousedown',()=>{
-            audioPlayer.pause();
-        });
-
         playProgress.addEventListener('input',(event) => {
+            audioPlayer.pause();
             currTime.textContent = inMinutes(audioDuration*event.target.value/100);
+            updateProgress();
         });
 
         playProgress.addEventListener('mouseup',()=>{
-            updateProgress();
             audioPlayer.play();
         });
         
