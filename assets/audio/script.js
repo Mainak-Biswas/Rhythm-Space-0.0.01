@@ -92,8 +92,8 @@
 
         //Play progress changes and update
         let paused = '';
-        playProgress.addEventListener('mousedown',()=>{paused = audioPlayer.paused;})
-        playProgress.addEventListener('touchstart',()=>{paused = audioPlayer.paused;})
+        playProgress.addEventListener('mousedown',()=>{paused = audioPlayer.paused;}) //Mouse Event
+        playProgress.addEventListener('touchstart',()=>{paused = audioPlayer.paused;}) //Touch Event
 
 
         playProgress.addEventListener('input',(event) => {
@@ -102,8 +102,8 @@
             updateProgress();
         });
 
-        playProgress.addEventListener('mouseup',()=>{if(!paused)audioPlayer.play();});
-        playProgress.addEventListener('touchend',()=>{if(!paused)audioPlayer.play();});
+        playProgress.addEventListener('mouseup',()=>{if(!paused)audioPlayer.play();}); //Mouse Event
+        playProgress.addEventListener('touchend',()=>{if(!paused)audioPlayer.play();}); //Touch Event
         
     function updateProgress(){
         const newtime = audioDuration*(playProgress.value/100);
