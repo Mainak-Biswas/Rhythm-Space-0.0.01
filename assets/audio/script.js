@@ -92,13 +92,11 @@
 
         //Play progress changes and update
         playProgress.addEventListener('input',(event) => {
+            const paused = audioPlayer.paused;
             audioPlayer.pause();
             currTime.textContent = inMinutes(audioDuration*event.target.value/100);
             updateProgress();
-        });
-
-        playProgress.addEventListener('mouseup',()=>{
-            audioPlayer.play();
+            if(!paused) audioPlayer.play();
         });
         
     function updateProgress(){
