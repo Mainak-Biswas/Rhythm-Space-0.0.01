@@ -89,6 +89,7 @@
     playProgress.type = 'range';
     playProgress.id= 'play-progress';
     playProgress.className= 'play-progress';
+    playProgress.value=0;
 
         //Play progress changes and update
         let paused = '';
